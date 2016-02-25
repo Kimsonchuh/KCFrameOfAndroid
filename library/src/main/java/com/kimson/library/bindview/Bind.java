@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kimson.library.annotation;
+package com.kimson.library.bindview;
 
 import android.app.Activity;
 import android.view.View;

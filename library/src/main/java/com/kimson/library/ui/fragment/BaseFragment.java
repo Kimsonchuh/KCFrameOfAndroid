@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.kimson.library.annotation.Bind;
+import com.kimson.library.bindview.Bind;
 
 /**
  * Created by zhujianheng on 2/24/16.

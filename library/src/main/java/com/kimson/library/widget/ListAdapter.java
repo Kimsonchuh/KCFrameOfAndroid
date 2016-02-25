@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.kimson.library.annotation.Bind;
+import com.kimson.library.bindview.Bind;
 
 import java.util.ArrayList;
 import java.util.List;
