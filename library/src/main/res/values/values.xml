@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="google_colors">
+        <item>@color/red</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/green</item>
+    </integer-array>
+    <color name="blue">#FF375BF1</color>
+    <color name="green">#FF34A350</color>
+    <color name="red">#FFC93437</color>
+    <color name="yellow">#FFF7D23E</color>
+    <item name="empty" type="id"/>
+    <item name="error" type="id"/>
+    <item name="grid" type="id"/>
+    <item name="list" type="id"/>
+    <item name="loading" type="id"/>
+    <item name="pull_to_refresh" type="id"/>
+    <item name="webview" type="id"/>
+    <string name="app_name">Blankapp</string>
+    <string name="load_more_click_to_load_more">Click to load more</string>
+    <string name="load_more_error">Load error,click retry</string>
+    <string name="load_more_loaded_empty">It is empty. :(</string>
+    <string name="load_more_loaded_no_more">All the data has been loaded</string>
+    <string name="load_more_loading">loading...</string>
+</resources>
