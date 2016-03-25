@@ -17,10 +17,5 @@
     <item name="loading" type="id"/>
     <item name="pull_to_refresh" type="id"/>
     <item name="webview" type="id"/>
-    <string name="app_name">Blankapp</string>
-    <string name="load_more_click_to_load_more">Click to load more</string>
-    <string name="load_more_error">Load error,click retry</string>
-    <string name="load_more_loaded_empty">It is empty. :(</string>
-    <string name="load_more_loaded_no_more">All the data has been loaded</string>
-    <string name="load_more_loading">loading...</string>
+
 </resources>
