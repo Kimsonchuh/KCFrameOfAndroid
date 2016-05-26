@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 /**
  * Created by zhujianheng on 2/24/16.
  */
-public abstract class StartUpActivity<Progress, Result> extends LoaderActivity<Progress, Result> implements Animation.AnimationListener {
+public abstract class StartUpActivity<Result> extends LoaderActivity<Result> implements Animation.AnimationListener {
 
     @Override
     public void setContentView(int layoutResID) {
@@ -58,20 +58,7 @@ public abstract class StartUpActivity<Progress, Result> extends LoaderActivity<P
     }
 
     @Override
-    public Result loadInBackground() throws Exception {
-        return null;
-    }
-
-    @Override
     public void onLoadComplete(Result data) {
     }
 
-    @Override
-    public void onLoadFailure(Exception e) {
-    }
-
-    @Override
-    public void onLoadProgressUpdate(Progress... values) {
-    }
-    // TODO: 重新定义StartUpListener
 }

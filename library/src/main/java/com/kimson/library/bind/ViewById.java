@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kimson.library.bindview;
+package com.kimson.library.bind;
 
 import android.support.annotation.IdRes;
 
