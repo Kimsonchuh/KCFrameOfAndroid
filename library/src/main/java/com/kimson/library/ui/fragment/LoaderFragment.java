@@ -1,77 +1,89 @@
 package com.kimson.library.ui.fragment;
 
-import com.kimson.library.loaderController.AsyncLoader;
-import com.kimson.library.loaderController.BlankLoader;
+import com.kimson.library.loader.AsyncLoader;
 
 /**
  * Created by zhujianheng on 2/24/16.
  */
-public abstract class LoaderFragment<Progress, Result> extends BaseFragment implements AsyncLoader.Callback<Progress, Result> {
-    private BlankLoader mBlankLoader;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.util.Log;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mBlankLoader != null) {
-            mBlankLoader.onResume();
-        }
-    }
+import java.util.Random;
 
-    @Override
-    public void onPause() {
-        if (mBlankLoader != null) {
-            mBlankLoader.onPause();
-        }
-        super.onPause();
-    }
+public abstract class LoaderFragment<D> extends BaseFragment implements LoaderManager.LoaderCallbacks<D>, AsyncLoader.LoaderCallback<D> {
+    private final String TAG = LoaderFragment.class.getSimpleName();
+
+    private final int LOADER_ID = new Random().nextInt();
+
+    private LoaderManager mLoaderManager;
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        destroyLoader();
+        this.destroyLoader();
     }
 
-    protected final void restartLoader() {
-        if (mBlankLoader == null) {
-            mBlankLoader = new BlankLoader(getActivity(), getActivity().getSupportLoaderManager(), this);
-        }
-        mBlankLoader.restartLoader();
-    }
-
-    protected final void destroyLoader() {
-        if (mBlankLoader != null) {
-            mBlankLoader.destroyLoader();
+    protected void ensureLoaderManager() {
+        if (mLoaderManager == null) {
+            mLoaderManager = getActivity().getSupportLoaderManager();
         }
     }
 
-    protected final void publishLoadProgress(final Progress... values) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                onLoadProgressUpdate(values);
-            }
-        });
+    protected void initLoader() {
+        Log.e(TAG, String.format(">>>initLoader(%d)", LOADER_ID));
+        ensureLoaderManager();
+        mLoaderManager.initLoader(LOADER_ID, null, this);
+    }
+
+    public void restartLoader() {
+        Log.e(TAG, String.format(">>>restartLoader(%d)", LOADER_ID));
+        ensureLoaderManager();
+        mLoaderManager.restartLoader(LOADER_ID, null, this);
+    }
+
+    public void destroyLoader() {
+        Log.e(TAG, String.format(">>>destroyLoader(%d)", LOADER_ID));
+        ensureLoaderManager();
+        mLoaderManager.destroyLoader(LOADER_ID);
+    }
+
+    protected void startLoading() {
+        ensureLoaderManager();
+        AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+        asyncLoader.startLoading();
+    }
+
+    protected void stopLoading() {
+        ensureLoaderManager();
+        AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+        asyncLoader.stopLoading();
+    }
+
+    protected void forceLoad() {
+        ensureLoaderManager();
+        AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+        asyncLoader.forceLoad();
     }
 
     @Override
-    public void onLoadStart() {
-
+    public Loader<D> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, ">>>onCreateLoader");
+        return new AsyncLoader<D>(getActivity(), this);
     }
 
+    @Deprecated
     @Override
-    public abstract Result loadInBackground() throws Exception;
-
-    @Override
-    public abstract void onLoadComplete(Result data);
-
-    @Override
-    public void onLoadFailure(Exception e) {
-
+    public void onLoadFinished(Loader<D> loader, D data) {
+        Log.d(TAG, ">>>onLoadFinished");
     }
 
+    @Deprecated
     @Override
-    public void onLoadProgressUpdate(Progress... values) {
-
+    public void onLoaderReset(Loader<D> loader) {
+        Log.d(TAG, ">>>onLoaderReset");
     }
+
 }
 
