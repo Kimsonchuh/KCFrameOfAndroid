@@ -18,7 +18,6 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
     protected PullToRefreshLayout mPullToRefreshLayout;
     protected RecyclerView mRecyclerView;
 
-
     protected PullToRefreshLayout.OnRefreshListener mOnRefreshListener = new PullToRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -67,7 +66,6 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    // PullToRefresh
     protected PullToRefreshLayout getPullToRefreshLayout() {
         return mPullToRefreshLayout;
     }
@@ -79,7 +77,6 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
         mPullToRefreshLayout.setRefreshing(false);
     }
 
-    // RecyclerView
     protected abstract int getRecyclerViewId();
 
     protected RecyclerView getRecyclerView() {
@@ -89,8 +86,6 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
     protected void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
     }
-
-    // Adapter && ViewHolder
 
     public RecyclerView.Adapter<VH> getAdapter() {
         return mAdapter;
@@ -119,7 +114,6 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
         return mItemsSource == null || mItemsSource.size() == 0;
     }
 
-    // ItemsSource
     public List<Item> getItemsSource() {
         if (mItemsSource == null) {
             mItemsSource = new ArrayList<>();

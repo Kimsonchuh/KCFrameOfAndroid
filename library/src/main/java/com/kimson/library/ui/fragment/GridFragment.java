@@ -28,9 +28,12 @@ public abstract class GridFragment<VH extends RecyclerView.ViewHolder, Item, Res
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
-        holder.itemView.setOnClickListener(v -> {
-            onListItemClick(getRecyclerView(), holder.itemView, position, getItemId(position));
+    public void onBindViewHolder(final VH holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onListItemClick(getRecyclerView(), holder.itemView, position, getItemId(position));
+            }
         });
     }
 
