@@ -18,7 +18,6 @@ public abstract class LoaderActivity<D> extends BaseActivity implements LoaderMa
     protected final int LOADER_ID = new Random().nextInt();
 
     //Activity and Fragment just has only one LoaderManager，and there are only to communicate to LoaderManager
-    //by
     protected LoaderManager mLoaderManager;
 
     @Override
@@ -42,8 +41,11 @@ public abstract class LoaderActivity<D> extends BaseActivity implements LoaderMa
 
     public void restartLoader() {
         Log.e(TAG, String.format(">>>restartLoader(%d)", LOADER_ID));
+        Log.e(TAG, ">>>>1");
         ensureLoaderManager();
+        Log.e(TAG, ">>>>2");
         mLoaderManager.restartLoader(LOADER_ID, null, this);
+        Log.e(TAG, ">>>>3");
     }
 
     public void destroyLoader() {

@@ -1,6 +1,7 @@
 package com.kimson.kcframeofandroid.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,24 +31,24 @@ public class QuestionActivity extends ListActivity<QuestionViewHolder, Question,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         getRecyclerView().addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        onRefresh();
+        initLoader();
     }
 
     @Override
     public void onRefresh() {
-        restartLoader();
+        getItemsSource().clear();
+        getAdapter().notifyDataSetChanged();
+        forceLoad();
     }
 
     @Override
     public QuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e(TAG, ">>>onCreateViewHolder");
         View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_question_list_item, parent, false);
         return new QuestionViewHolder(currentView);
     }
 
     @Override
     public void onBindViewHolder(QuestionViewHolder holder, int position) {
-        Log.e(TAG, ">>>onBindViewHolder:" + position);
         holder.bind(getItemsSource().get(position));
     }
 
@@ -70,8 +71,8 @@ public class QuestionActivity extends ListActivity<QuestionViewHolder, Question,
                 getItemsSource().addAll(data.getData());
             }
         }
-        onRefreshComplete();
         getAdapter().notifyDataSetChanged();
+        onRefreshComplete();
     }
 
     @Override

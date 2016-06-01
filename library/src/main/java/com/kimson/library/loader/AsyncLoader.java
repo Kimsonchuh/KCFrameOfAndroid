@@ -31,7 +31,7 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
      */
     @Override
     public D loadInBackground() {
-//        Log.e(TAG, ">>>loadInBackground");
+        Log.e(TAG, ">>>loadInBackground");
         try {
             mError = null;
             return mLoaderCallback.onLoadInBackground();
@@ -48,7 +48,7 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
      */
     @Override
     public void deliverResult(D data) {
-//        Log.e(TAG, ">>>deliverResult");
+        Log.e(TAG, ">>>deliverResult");
         if (isReset()) {
             // An async query came in while the loader is stopped.  We don't need the result.
             if (mData != null) {
@@ -73,7 +73,7 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
      */
     @Override
     protected void onStartLoading() {
-//        Log.e(TAG, ">>>onStartLoading");
+        Log.e(TAG, ">>>onStartLoading");
         if (mData != null) {
             deliverResult(mData);
         }
@@ -89,7 +89,7 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
      */
     @Override
     protected void onStopLoading() {
-//        Log.e(TAG, ">>>onStopLoading");
+        Log.e(TAG, ">>>onStopLoading");
         // Attempt to cancel the current load task if possible.
         cancelLoad();
     }
