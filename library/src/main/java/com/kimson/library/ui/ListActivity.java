@@ -2,6 +2,7 @@ package com.kimson.library.ui;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import com.kimson.library.R;
 
@@ -9,6 +10,7 @@ import com.kimson.library.R;
  * Created by zhujianheng on 2/24/16.
  */
 public abstract class ListActivity<VH extends RecyclerView.ViewHolder, Item, Result> extends RecyclerActivity<VH, Item, Result> {
+
 
     @Override
     public void onContentChanged() {

@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">KCFrameOfAndroid</string>
+    <string name="list_error">加载数据失败，点击重试</string>
+    <string name="list_data_not_found">没有找到数据</string>
+    <string name="list_loading">加载数据中</string>
     <string name="n_a">n/a</string>
+    <string name="public_just_now">刚刚</string>
+
+    <!-- NetWork Problem -->
+    <string name="http_status_code_error">网络异常，错误码：%d</string>
+    <string name="http_exception_error">网络异常，请求超时</string>
+    <string name="socket_exception_error">网络异常，读取数据超时</string>
+    <string name="app_run_code_error">应用程序运行时异常</string>
 </resources>

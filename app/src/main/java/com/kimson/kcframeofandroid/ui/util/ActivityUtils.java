@@ -1,4 +1,4 @@
-package com.kimson.kcframeofandroid.util;
+package com.kimson.kcframeofandroid.ui.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,11 @@ import com.kimson.kcframeofandroid.ui.HomeActivity;
 import java.util.HashMap;
 import java.util.Stack;
 
+
 /**
- * Created by zhujianheng on 5/31/16.
+ * Created by zhujianheng on 6/1/16.
  */
-public class ActivityUtils {
+public class ActivityUtils{
     private static Stack<Activity> activityStack;
 
     /**

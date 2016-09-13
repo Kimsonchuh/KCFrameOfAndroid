@@ -26,7 +26,26 @@ public abstract class LoaderActivity<D> extends BaseActivity implements LoaderMa
         this.destroyLoader();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mLoaderManager != null) {
+            AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+            asyncLoader.setIgnoreOnce(false);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mLoaderManager != null) {
+            AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+            asyncLoader.setIgnoreOnce(true);
+        }
+    }
+
     protected void ensureLoaderManager() {
+        Log.e(TAG, ">>>ensureLoaderManager");
         if (mLoaderManager == null) {
             mLoaderManager = getSupportLoaderManager();
         }
@@ -41,11 +60,8 @@ public abstract class LoaderActivity<D> extends BaseActivity implements LoaderMa
 
     public void restartLoader() {
         Log.e(TAG, String.format(">>>restartLoader(%d)", LOADER_ID));
-        Log.e(TAG, ">>>>1");
         ensureLoaderManager();
-        Log.e(TAG, ">>>>2");
         mLoaderManager.restartLoader(LOADER_ID, null, this);
-        Log.e(TAG, ">>>>3");
     }
 
     public void destroyLoader() {
@@ -55,18 +71,21 @@ public abstract class LoaderActivity<D> extends BaseActivity implements LoaderMa
     }
 
     protected void startLoading() {
+        Log.e(TAG, String.format(">>>startLoading(%d)", LOADER_ID));
         ensureLoaderManager();
         AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
         asyncLoader.startLoading();
     }
 
     protected void stopLoading() {
+        Log.e(TAG, String.format(">>>stopLoading(%d)", LOADER_ID));
         ensureLoaderManager();
         AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
         asyncLoader.stopLoading();
     }
 
     protected void forceLoad() {
+        Log.e(TAG, String.format(">>>forceLoad(%d)", LOADER_ID));
         ensureLoaderManager();
         AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
         asyncLoader.forceLoad();

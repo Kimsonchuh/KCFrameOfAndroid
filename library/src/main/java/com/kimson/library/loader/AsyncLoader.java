@@ -19,6 +19,8 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
     private LoaderCallback<D> mLoaderCallback;
 
+    private boolean ignoreOnce = false;
+
     public AsyncLoader(Context context, LoaderCallback<D> loaderCallback) {
         super(context);
         this.mLoaderCallback = loaderCallback;
@@ -60,9 +62,11 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
         if (isStarted()) {
             if (hasError()) {
+                Log.e(TAG, ">>>onLoadError");
                 mLoaderCallback.onLoadError(mError);
             } else {
                 // If the Loader is currently started, we can immediately deliver its results.
+                Log.e(TAG, ">>>onLoadComplete");
                 mLoaderCallback.onLoadComplete(mData);
             }
         }
@@ -74,10 +78,12 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
     @Override
     protected void onStartLoading() {
         Log.e(TAG, ">>>onStartLoading");
+        if (isIgnoreOnce()) {
+            return;
+        }
         if (mData != null) {
             deliverResult(mData);
         }
-
         if (takeContentChanged() || mData == null) {
             forceLoad();
             mLoaderCallback.onLoadStart();
@@ -116,6 +122,14 @@ public class AsyncLoader<D> extends AsyncTaskLoader<D> {
 
         mData     = null;
         mError    = null;
+    }
+
+    public boolean isIgnoreOnce() {
+        return ignoreOnce;
+    }
+
+    public void setIgnoreOnce(boolean ignoreOnce) {
+        this.ignoreOnce = ignoreOnce;
     }
 
     public boolean hasError() {

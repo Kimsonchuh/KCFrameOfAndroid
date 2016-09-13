@@ -1,5 +1,6 @@
 package com.kimson.library.ui;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,11 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
     protected PullToRefreshLayout mPullToRefreshLayout;
     protected RecyclerView mRecyclerView;
 
-    protected PullToRefreshLayout.OnRefreshListener mOnRefreshListener = new PullToRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            RecyclerActivity.this.onRefresh();
-        }
-    };
+    //加载更多
+    private int mCurrentScrollState;
+    private OnLoadMoreListener onLoadMoreListener;
+
+    protected PullToRefreshLayout.OnRefreshListener mOnRefreshListener;
 
     protected RecyclerView.Adapter<VH> mAdapter = new RecyclerView.Adapter<VH>() {
         @Override
@@ -59,18 +59,39 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
         super.onContentChanged();
         View view = this.getWindow().getDecorView();
         mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.pull_to_refresh);
-        if (mPullToRefreshLayout != null) {
+        if (mPullToRefreshLayout != null && mOnRefreshListener != null) {
             mPullToRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         }
         mRecyclerView = (RecyclerView) view.findViewById(this.getRecyclerViewId());
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    recyclerView.invalidate();
+                }
+                mCurrentScrollState = newState;
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisibleItemPosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (lastVisibleItemPosition + 1 == getAdapter().getItemCount() && mCurrentScrollState != RecyclerView.SCROLL_STATE_IDLE) {
+                    //To call OnRefresh when the RecyclerView scroll to the end
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.onLoadMore();
+                    }
+
+                }
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
     protected PullToRefreshLayout getPullToRefreshLayout() {
         return mPullToRefreshLayout;
     }
-
-    public abstract void onRefresh();
 
     public void onRefreshComplete() {
         if (mPullToRefreshLayout == null) return;
@@ -85,6 +106,14 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
 
     protected void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+    public void setmOnRefreshListener(PullToRefreshLayout.OnRefreshListener mOnRefreshListener) {
+        this.mOnRefreshListener = mOnRefreshListener;
     }
 
     public RecyclerView.Adapter<VH> getAdapter() {
@@ -119,5 +148,10 @@ public abstract class RecyclerActivity<VH extends RecyclerView.ViewHolder, Item,
             mItemsSource = new ArrayList<>();
         }
         return mItemsSource;
+    }
+
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
     }
 }

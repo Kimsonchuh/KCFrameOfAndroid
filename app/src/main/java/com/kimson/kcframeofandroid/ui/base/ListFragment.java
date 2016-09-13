@@ -1,26 +1,23 @@
 package com.kimson.kcframeofandroid.ui.base;
 
 import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import com.kimson.kcframeofandroid.R;
 import com.kimson.kcframeofandroid.api.ApiClient;
 import com.kimson.kcframeofandroid.api.ApiService;
-import com.kimson.kcframeofandroid.ui.holder.ViewHolder;
 import com.kimson.kcframeofandroid.ui.util.ErrorUtils;
-import com.kimson.kcframeofandroid.util.ActivityUtils;
-import com.kimson.library.ui.RecyclerActivity;
+import com.kimson.library.ui.fragment.RecyclerFragment;
 import com.kimson.library.widget.PullToRefreshMode;
+
 
 /**
  * Created by zhujianheng on 6/2/16.
  */
-public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends com.kimson.library.ui.ListActivity<VH, Item, Result> implements RecyclerActivity.OnLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+public abstract class ListFragment<VH extends RecyclerView.ViewHolder, Item, Result> extends com.kimson.library.ui.fragment.ListFragment<VH, Item, Result> implements SwipeRefreshLayout.OnRefreshListener, RecyclerFragment.OnLoadMoreListener {
     private final String TAG = this.getClass().getSimpleName();
 
     protected final ApiService API = ApiClient.getApiService();
@@ -35,26 +32,9 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
     private boolean mFirstLoaded = false;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityUtils.addActivity(this);
-        // 禁止横屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     /**
      * Setting the mode of refresh list
+     *
      * @param mode
      */
     public void setMode(PullToRefreshMode mode) {
@@ -78,11 +58,12 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
         }
     }
 
+
     @Override
     public void onRefresh() {
-        Log.e(TAG, ">>>onRefresh");
         isLoadMore = false;
         forceLoad();
+
 
         // 首次加载处理
         if (!mFirstLoaded) {
@@ -99,6 +80,7 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
             getRecyclerView().setVisibility(View.INVISIBLE);
         }
     }
+
 
     @Override
     public void onLoadStart() {
@@ -125,7 +107,7 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
     public void onLoadError(Exception e) {
         onRefreshComplete();
         if (!isEmpty()) {
-            ErrorUtils.show(this, e);
+            ErrorUtils.show(getActivity(), e);
         } else {
             ensureView();
             if (mLoadingView != null) {
@@ -159,22 +141,19 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
             if (mEmptyView != null) {
                 if (getItemsSource().size() == 0) {
                     mEmptyView.setVisibility(View.VISIBLE);
-                } else {
-                    mEmptyView.setVisibility(View.INVISIBLE);
                 }
             }
             if (mErrorView != null) {
                 mErrorView.setVisibility(View.INVISIBLE);
             }
             getRecyclerView().setVisibility(View.VISIBLE);
-        } else {
-            if (getItemsSource().size() == 0) {
-                mEmptyView.setVisibility(View.VISIBLE);
-            } else {
-                mEmptyView.setVisibility(View.INVISIBLE);
-            }
         }
         mFirstLoaded = true;
+    }
+
+    @Override
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
     }
 
     @Override
@@ -188,7 +167,7 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
     }
 
     public void ensureView() {
-        View view = getWindow().getDecorView().getRootView();
+        View view = getView();
         if (view == null) {
             return;
         }
@@ -209,7 +188,7 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
 
     protected void showProgressDialog(String message) {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog = new ProgressDialog(getActivity());
         }
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(message);
@@ -221,28 +200,5 @@ public abstract class ListActivity<VH extends ViewHolder, Item, Result> extends 
             mProgressDialog.dismiss();
         }
     }
-
-    protected void setLoadingShow(boolean isShow) {
-        if (mLoadingView != null) {
-            if (mLoadingView instanceof TextView) {
-                mLoadingView.setVisibility(isShow ? View.VISIBLE : View.GONE);
-            }
-        }
-    }
-
-    protected void setEmptyShow(boolean isShow) {
-        if (mEmptyView != null) {
-            if (mEmptyView instanceof TextView) {
-                mEmptyView.setVisibility(isShow ? View.VISIBLE : View.GONE);
-            }
-        }
-    }
-
-    protected void setEmptyText(String text) {
-        if (mEmptyView != null) {
-            if (mEmptyView instanceof TextView) {
-                ((TextView) mEmptyView).setText(text);
-            }
-        }
-    }
 }
+

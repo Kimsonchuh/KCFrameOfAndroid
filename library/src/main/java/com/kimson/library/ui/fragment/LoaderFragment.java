@@ -25,6 +25,24 @@ public abstract class LoaderFragment<D> extends BaseFragment implements LoaderMa
         this.destroyLoader();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mLoaderManager != null) {
+            AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+            asyncLoader.setIgnoreOnce(false);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mLoaderManager != null) {
+            AsyncLoader<D> asyncLoader = (AsyncLoader<D>) mLoaderManager.getLoader(LOADER_ID);
+            asyncLoader.setIgnoreOnce(true);
+        }
+    }
+
     protected void ensureLoaderManager() {
         if (mLoaderManager == null) {
             mLoaderManager = getActivity().getSupportLoaderManager();

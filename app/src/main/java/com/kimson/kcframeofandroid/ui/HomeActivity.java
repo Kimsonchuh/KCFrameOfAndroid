@@ -9,7 +9,7 @@ import com.kimson.kcframeofandroid.R;
 import com.kimson.library.bind.ViewById;
 import com.kimson.library.ui.BaseActivity;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @ViewById(R.id.coorLayout)
     private Button mCoorLayout;

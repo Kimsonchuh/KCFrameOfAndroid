@@ -17,10 +17,7 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET(QUESTIONS)
-    Call<Result<ArrayList<Question>>> questions(@Query("city") String city);
-
-
-    @GET(QUESTIONS)
-    Call<ArrayList<Question>> questions_no_result(@Query("city") String city);
+    Call<Result<ArrayList<Question>>> questions(@Query("city") String city,
+                                                @Query("page") int page);
 
 }

@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 /**
  * Created by zhujianheng on 2/24/16.
  */
-public abstract class StartUpActivity<Result> extends LoaderActivity<Result> implements Animation.AnimationListener {
+public abstract class StartUpActivity extends BaseActivity implements Animation.AnimationListener {
 
     @Override
     public void setContentView(int layoutResID) {
@@ -51,14 +51,6 @@ public abstract class StartUpActivity<Result> extends LoaderActivity<Result> imp
 
     @Override
     public void onAnimationRepeat(Animation anim) {
-    }
-
-    @Override
-    public void onLoadStart() {
-    }
-
-    @Override
-    public void onLoadComplete(Result data) {
     }
 
 }
